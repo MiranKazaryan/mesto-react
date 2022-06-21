@@ -1,35 +1,24 @@
-const handleResponse = (res) =>{
-    if(res.ok){
-       // console.log(res);
-        return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status.message}`);
-}
 class Api{
     constructor({baseUrl, headers}) {
         // тело конструктора
         this._baseUrl = baseUrl;
         this._headers = headers;
       }
+      _checkResponse(res) {
+        if(res.ok){
+            return res.json();
+        }
+        return Promise.reject(`Ошибка ${res.status.message}`);
+      }
       getProfile(){
           return fetch(`${this._baseUrl}/users/me`, {
               headers: this._headers
-          }).then(res => {
-              if (res.ok) {
-                  return res.json();
-              }
-              return Promise.reject(`Ошибка ${res.status}`);
-          })
+          }).then (this._checkResponse)
           .catch(console.log) 
       }
       getInitialCards() {
         return fetch(`${this._baseUrl}/cards`, {headers: this._headers})
-        .then(res =>{
-            if (res.ok){
-                return res.json();
-            }
-            return Promise.reject(`Ошибка ${res.status}`);
-        })
+        .then(this._checkResponse)
         .catch(console.log) 
       }
       editProfile(name,about){
@@ -39,12 +28,7 @@ class Api{
               body: JSON.stringify({
                 name, about})
       })
-            .then(res =>{
-            if (res.ok){
-                return res.json();
-            }
-            return Promise.reject(`Ошибка ${res.status}`);
-            })
+            .then(this._checkResponse)
             .catch(console.log) 
     }
     addCard(name, link){
@@ -54,12 +38,7 @@ class Api{
             body: JSON.stringify({
               name, link})
     })
-          .then(res =>{
-          if (res.ok){
-              return res.json();
-          }
-          return Promise.reject(`Ошибка ${res.status}`);
-          })
+          .then(this._checkResponse)
           .catch(console.log) 
   }
   deleteCard(id){
@@ -67,12 +46,7 @@ class Api{
         method: 'DELETE', 
         headers: this._headers,
 })
-      .then(res =>{
-      if (res.ok){
-          return res.json();
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
-      })
+      .then(this._checkResponse)
       .catch(console.log) 
 }
 addLike(id){
@@ -80,12 +54,7 @@ addLike(id){
         method: 'PUT', 
         headers: this._headers,
 })
-      .then(res =>{
-      if (res.ok){
-          return res.json();
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
-      })
+      .then(this._checkResponse)
       .catch(console.log) 
 }
 deleteLike(id){
@@ -93,12 +62,7 @@ deleteLike(id){
         method: 'DELETE', 
         headers: this._headers,
 })
-      .then(res =>{
-      if (res.ok){
-          return res.json();
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
-      })
+      .then(this._checkResponse)
       .catch(console.log) 
 }
 editAvatar(avatar) {
@@ -109,12 +73,7 @@ editAvatar(avatar) {
             avatar
         })
     })
-    .then(res =>{
-        if (res.ok){
-            return res.json();
-        }
-        return Promise.reject(`Ошибка ${res.status}`);
-        })
+    .then(this._checkResponse)
         .catch(console.log) 
 }
 }
