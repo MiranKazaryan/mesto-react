@@ -14,12 +14,10 @@ class Api{
           return fetch(`${this._baseUrl}/users/me`, {
               headers: this._headers
           }).then (this._checkResponse)
-          .catch(console.log) 
       }
       getInitialCards() {
         return fetch(`${this._baseUrl}/cards`, {headers: this._headers})
         .then(this._checkResponse)
-        .catch(console.log) 
       }
       editProfile(name,about){
           return fetch(`${this._baseUrl}/users/me`, {
@@ -29,7 +27,6 @@ class Api{
                 name, about})
       })
             .then(this._checkResponse)
-            .catch(console.log) 
     }
     addCard(name, link){
         return fetch(`${this._baseUrl}/cards`, {
@@ -39,7 +36,6 @@ class Api{
               name, link})
     })
           .then(this._checkResponse)
-          .catch(console.log) 
   }
   deleteCard(id){
     return fetch(`${this._baseUrl}/cards/${id} `, {
@@ -47,7 +43,6 @@ class Api{
         headers: this._headers,
 })
       .then(this._checkResponse)
-      .catch(console.log) 
 }
 addLike(id){
     return fetch(`${this._baseUrl}/cards/${id}/likes `, {
@@ -55,7 +50,6 @@ addLike(id){
         headers: this._headers,
 })
       .then(this._checkResponse)
-      .catch(console.log) 
 }
 deleteLike(id){
     return fetch(`${this._baseUrl}/cards/${id}/likes `, {
@@ -63,7 +57,6 @@ deleteLike(id){
         headers: this._headers,
 })
       .then(this._checkResponse)
-      .catch(console.log) 
 }
 editAvatar(avatar) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
@@ -74,7 +67,6 @@ editAvatar(avatar) {
         })
     })
     .then(this._checkResponse)
-        .catch(console.log) 
 }
 }
 export const api = new Api({
