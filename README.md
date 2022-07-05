@@ -13,4 +13,3 @@ Figma
 JavaScript
 Webpack
 React
-Figma
