@@ -2,16 +2,11 @@ import React from "react";
 import {api} from "../utils/Api";
 import Card from './Card';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
-import {CardsContext} from '../contexts/CardsContext';
 import {CardContext} from '../contexts/CardContext';
 
 function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete, cards}){
-    
- 
+    //контекст с данными пользователя
     const currentUser = React.useContext(CurrentUserContext);
-
-
-
       
     return(
         <>

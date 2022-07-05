@@ -1,5 +1,6 @@
 import React from "react";
 import logoPath from "../images/Vector.svg"
+//компонент шапки сайта
 function Header(){
     return(
         <header className="header">

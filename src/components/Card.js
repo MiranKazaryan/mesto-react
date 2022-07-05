@@ -1,22 +1,28 @@
 import React from "react";
 import {CardContext} from '../contexts/CardContext';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-
+//компонент карточки
 function Card({onCardClick, onCardLike, onCardDelete}){
+    //использование контекста карточки
     const card = React.useContext(CardContext);
+    //использование контекста текущего пользователя
     const currentUser = React.useContext(CurrentUserContext);
+    //проверка карточки на принадлежность пользователю
     const isOwn = (card.owner._id === currentUser._id);
-
+    //класс удаления карточки
     const cardDeleteButtonClassName = `card__delete-button ${isOwn ? '': 'card__delete-button_hidden'}`
-    
+    //проверка лайка карточки пользователем
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     const cardLikeButtonClassName = `card__like-button ${isLiked ? 'card__like-button_active': ''}`;
+    //функция клика по карточке
     function handleClick(){
         onCardClick(card);
     }
+    //функция клика на лайк
     function handleLikeClick(){
         onCardLike(card);
     }
+    //функция клика на удаление
     function handleDeleteClick(){
         onCardDelete(card);
     }

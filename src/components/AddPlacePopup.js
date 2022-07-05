@@ -1,20 +1,44 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
-
-function AddPlacePopup({isOpen, onClose, onUpdatePlace}){
+//компонент добавления карточки
+function AddPlacePopup({isOpen, onClose, onUpdatePlace,isLoad,handleOverlayClose}){
+    //стейты имени и описания картинки
     const [name, setName] = React.useState({});
     const [link, setLink] = React.useState({});
-
+    //валидация
+    const [nameValid,setNameValid] = React.useState(false);
+    const [errorNameMessage, setErrorNameMessage] = React.useState('');
+    const [linkValid, setLinkValid] = React.useState(false);
+    const [errorLinkMessage, setErrorLinkMessage] = React.useState('');
+    //обнуление инпутов после ввода без сабмита
+    React.useEffect(()=>{
+        setName('');
+        setLink('');
+        setNameValid(false);
+        setErrorNameMessage('');
+        setLinkValid(false);
+        setErrorLinkMessage('');
+    },[isOpen]);
+    //функция при изменение инпута name
     function handleNameCard(e){
         setName(e.target.value);
+        setNameValid(e.target.validity.valid);
+        setErrorNameMessage(e.target.validationMessage);
     }
+    //функция при изменение инпута link
     function handleLink(e){
         setLink(e.target.value);
+        setLinkValid(e.target.validity.valid);
+        setErrorLinkMessage(e.target.validationMessage);
     }
+    //функция сабмита
     function handleSubmit(e){
         e.preventDefault();
         onUpdatePlace({name:name, link:link})
     }
+    //проверка валидности
+    const isValid = linkValid && nameValid;
+    
     return(
         <PopupWithForm 
         title="Новое место"
@@ -22,11 +46,14 @@ function AddPlacePopup({isOpen, onClose, onUpdatePlace}){
         buttonText="Создать"
         isOpen={isOpen}
         onClose={onClose}
-        onSubmit={handleSubmit}>
-                <input onChange={handleNameCard} className="popup__input popup__input_type_place" minLength="2" maxLength="30" name="place" id="input-place" placeholder="Название" type="text" required/>
-                <span className="popup__input-error input-place-error"></span>
-                <input onChange={handleLink} className="popup__input popup__input_type_img-link" maxLength="80" name="link" id="input-link" placeholder="Ссылка на картинку" type="url" required/>
-                <span className="popup__input-error input-link-error"></span>
+        onSubmit={handleSubmit}
+        isLoad={isLoad}
+        isValid={isValid} 
+        handleOverlayClose={handleOverlayClose}>
+                <input value={name || ''} onChange={handleNameCard} className={`popup__input popup__input_type_place ${errorNameMessage==='' ? '' : 'popup__input_type_error'}`} minLength="2" maxLength="30" name="place" id="input-place" placeholder="Название" type="text" required/>
+                <span className="popup__input-error input-place-error">{errorNameMessage}</span>
+                <input value={link || ''} onChange={handleLink} className={`popup__input popup__input_type_img-link ${errorLinkMessage==='' ? '' : 'popup__input_type_error'}`} maxLength="80" name="link" id="input-link" placeholder="Ссылка на картинку" type="url" required/>
+                <span className="popup__input-error input-link-error">{errorLinkMessage}</span>
         </PopupWithForm>
     );
 }

@@ -3,6 +3,7 @@
     height: 282px;
     border-radius: 0px;
     display: block;
+    object-fit: cover;
 }
 .card__image:hover{
     opacity: 0.5;

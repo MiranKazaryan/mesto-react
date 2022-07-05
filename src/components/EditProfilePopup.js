@@ -1,22 +1,42 @@
-import React, { Children } from "react";
+import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import PopupWithForm from "./PopupWithForm";
-
-function EditProfilePopup({isOpen, onClose, onUpdateUser}){
+//компонент попапа редактирования профиля
+function EditProfilePopup({isOpen, onClose, onUpdateUser,isLoad,handleOverlayClose}){
+    //стейты имени и описания пользователя
     const [name, setName] = React.useState({});
     const [description, setDescription] = React.useState({});
-    const currentUser = React.useContext(CurrentUserContext);
+
+    //валидация
+    const [nameValid,setNameValid] = React.useState(false);
+    const [errorNameMessage, setErrorNameMessage] = React.useState('');
+    const [descriptionValid, setDescriptionValid] = React.useState(false);
+    const [errorDescriptionMessage, setErrorDescriptionMessage] = React.useState('');
+    //использование контекста с текущими значениями пользователя
+    const currentUser = React.useContext(CurrentUserContext);  
+
+    //обновление инпутов после ввода без/с submit
     React.useEffect(()=>{
         setName(currentUser.name);
         setDescription(currentUser.about);
-    },[currentUser]);
+        setNameValid(false);
+        setErrorNameMessage('');
+        setDescriptionValid(false);
+        setErrorDescriptionMessage('');
+    },[currentUser,isOpen]);
+    //функция при изменение инпута name
     function handleNameChange(e){
         setName(e.target.value);
+        setNameValid(e.target.validity.valid);
+        setErrorNameMessage(e.target.validationMessage);
     }
+    //функция при изменение инпута description
     function handleDescriptionChange(e){
         setDescription(e.target.value);
+        setDescriptionValid(e.target.validity.valid);
+        setErrorDescriptionMessage(e.target.validationMessage);
     }
-
+    //функция сабмита
     function handleSubmit(e){
         e.preventDefault();
         onUpdateUser({
@@ -24,19 +44,19 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser}){
             about: description
         });
     }
-
-
+    //проверка валидности данных
+    const isValid = descriptionValid || nameValid;
     return(
         <PopupWithForm 
         title="Редактировать профиль"
         name="edit"
-        buttonText="Сохранить"
+        buttonText='Сохранить'
         isOpen={isOpen}
-        onClose={onClose} onSubmit={handleSubmit}>
-            <input className="popup__input popup__input_type_name" minLength="2" maxLength="40" name="name" placeholder="Имя" id="input-name" value={name ||''} onChange={handleNameChange} required />
-            <span className="popup__input-error input-name-error"></span>
-            <input className="popup__input popup__input_type_description" minLength="2" maxLength="200" name="about" placeholder="Вид деятельности" id="input-description" value={description || ''} onChange={handleDescriptionChange} required />
-            <span className="popup__input-error input-description-error"></span>
+        onClose={onClose} onSubmit={handleSubmit} isLoad={isLoad} handleOverlayClose={handleOverlayClose} isValid={isValid}>
+            <input className={`popup__input popup__input_type_name ${errorNameMessage==='' ? '' : 'popup__input_type_error'}`} minLength="2" maxLength="40" name="name" placeholder="Имя" id="input-name" value={name || ''} onChange={handleNameChange} required />
+            <span className="popup__input-error input-name-error">{errorNameMessage}</span>
+            <input className={`popup__input popup__input_type_description${errorDescriptionMessage==='' ? '' : 'popup__input_type_error'}`} minLength="2" maxLength="200" name="about" placeholder="Вид деятельности" id="input-description" value={description || ''} onChange={handleDescriptionChange} required />
+            <span className="popup__input-error input-description-error">{errorDescriptionMessage}</span>
         </PopupWithForm>
     );
 }

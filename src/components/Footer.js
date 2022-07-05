@@ -1,5 +1,5 @@
 import React from "react";
-
+//компонент подвала сайта
 function Footer(){
     return(
         <footer className="footer">
