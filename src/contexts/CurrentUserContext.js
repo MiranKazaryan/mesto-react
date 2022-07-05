@@ -1,3 +1,3 @@
-import React from "react";
+import {createContext} from "react";
 //создание контекста с данными пользователя
-export const CurrentUserContext = React.createContext();
+export const CurrentUserContext = createContext();

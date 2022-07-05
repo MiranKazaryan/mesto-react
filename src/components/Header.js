@@ -1,11 +1,10 @@
-import React from "react";
-import logoPath from "../images/Vector.svg"
+import logoPath from "../images/Vector.svg";
 //компонент шапки сайта
-function Header(){
-    return(
-        <header className="header">
-        <img className="header__logo" src={logoPath} alt="Логотип сайта"/>
+function Header() {
+  return (
+    <header className="header">
+      <img className="header__logo" src={logoPath} alt="Логотип сайта" />
     </header>
-    );
+  );
 }
 export default Header;
